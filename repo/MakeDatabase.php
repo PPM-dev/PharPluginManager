@@ -3,7 +3,7 @@ $data = [];
 $result = file_get_contents("https://poggit.pmmp.io/plugins.json?latest-only");
 $result = json_decode($result,true);
 $i = 0;
-foreach ($result[0] as $value) {
+foreach ($result as $value) {
     $data[$i] = [];
     $data[$i]["name"] = $value["name"];
     $data[$i]["version"] = $value["version"];
