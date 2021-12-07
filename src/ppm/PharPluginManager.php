@@ -275,10 +275,11 @@ class PharPluginManager extends PluginBase implements Listener
 			if($version->getMinor() === $myVersion->getMinor() and $version->getPatch() > $myVersion->getPatch()){
 				return false;
 			}
+			
 		return true;
 		}
 
-		return false;
+		return true;
     }
     
     public function checkplugininlist($list,$name){
