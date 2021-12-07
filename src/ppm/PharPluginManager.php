@@ -295,7 +295,9 @@ class PharPluginManager extends PluginBase implements Listener
                     //$sender->sendMessage("エラー(必須のパラメーター[api]が設定されていないか、不正です。):".$package["name"]);
                     $error = true;
                 }
-                $cache[$package["name"]]["api"] = $package["api"][0];
+                if(!empty($package["api"])){
+                    $cache[$package["name"]]["api"] = $package["api"][0];
+                }
                 if(!isset($package["deps"])){
                     //$sender->sendMessage("エラー(必須のパラメーター[deps]が設定されていません):".$package["name"]);
                     $error = true;
