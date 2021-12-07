@@ -141,7 +141,7 @@ class PharPluginManager extends PluginBase implements Listener
                                 return true;
                             }
                             $sender->sendMessage("受信データ解析開始:".$url);
-                            $result = json_decode($result);
+                            $result = json_decode($result,true);
                             $sender->sendMessage("受信データ解析終了:".$url);
                             $cache[$i] = $result; 
                         }
@@ -272,37 +272,39 @@ class PharPluginManager extends PluginBase implements Listener
     public function makelist($data,$sender){
         $sender->sendMessage("プラグインリストを生成中…");
         $cache = [];
-        foreach($data as $package){
-            var_dump($package);
-            if(!isset($package["name"])){
-                $sender->sendMessage("エラー(必須のパラメーター[name]が設定されていません)");
-                $sender->sendMessage("アップデート処理に失敗しました");
-                return True;
+        foreach($data as $value){
+            foreach($value as $package){
+                var_dump($package);
+                if(!isset($package["name"])){
+                    $sender->sendMessage("エラー(必須のパラメーター[name]が設定されていません)");
+                    $sender->sendMessage("アップデート処理に失敗しました");
+                    return True;
+                }
+                if(!isset($package["name"]["version"])){
+                    $sender->sendMessage("エラー(必須のパラメーター[version]が設定されていません):".$package["name"]);
+                    $sender->sendMessage("アップデート処理に失敗しました");
+                    return True;
+                }
+                $cache[$package["name"]]["version"] = $package["version"];
+               if(!isset($package["name"]["artifact_url"])){
+                    $sender->sendMessage("エラー(必須のパラメーター[artifact_url]が設定されていません):".$package["name"]);
+                    $sender->sendMessage("アップデート処理に失敗しました");
+                    return True;
+                }
+                $cache[$package["name"]]["artifact_url"] = $package["artifact_url"];
+                if(!isset($package["name"]["api"])||!isset($package["name"]["api"]["from"])||!isset($package["name"]["api"]["to"])){
+                    $sender->sendMessage("エラー(必須のパラメーター[api]が設定されていないか、不正です。):".$package["name"]);
+                    $sender->sendMessage("アップデート処理に失敗しました");
+                    return True;
+                }
+                $cache[$package["name"]]["api"] = $package["api"];
+                if(!isset($package["name"]["deps"])){
+                    $sender->sendMessage("エラー(必須のパラメーター[deps]が設定されていません):".$package["name"]);
+                    $sender->sendMessage("アップデート処理に失敗しました");
+                    return True;
+                }
+                $cache[$package["name"]]["deps"] = $package["deps"];
             }
-            if(!isset($package["name"]["version"])){
-                $sender->sendMessage("エラー(必須のパラメーター[version]が設定されていません):".$package["name"]);
-                $sender->sendMessage("アップデート処理に失敗しました");
-                return True;
-            }
-            $cache[$package["name"]]["version"] = $package["version"];
-            if(!isset($package["name"]["artifact_url"])){
-                $sender->sendMessage("エラー(必須のパラメーター[artifact_url]が設定されていません):".$package["name"]);
-                $sender->sendMessage("アップデート処理に失敗しました");
-                return True;
-            }
-            $cache[$package["name"]]["artifact_url"] = $package["artifact_url"];
-            if(!isset($package["name"]["api"])||!isset($package["name"]["api"]["from"])||!isset($package["name"]["api"]["to"])){
-                $sender->sendMessage("エラー(必須のパラメーター[api]が設定されていないか、不正です。):".$package["name"]);
-                $sender->sendMessage("アップデート処理に失敗しました");
-                return True;
-            }
-            $cache[$package["name"]]["api"] = $package["api"];
-            if(!isset($package["name"]["deps"])){
-                $sender->sendMessage("エラー(必須のパラメーター[deps]が設定されていません):".$package["name"]);
-                $sender->sendMessage("アップデート処理に失敗しました");
-                return True;
-            }
-            $cache[$package["name"]]["deps"] = $package["deps"];
         }
         $this->checkdepsinlist($cache,$sender);
     }
