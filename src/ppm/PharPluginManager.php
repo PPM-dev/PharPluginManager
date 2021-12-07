@@ -273,6 +273,7 @@ class PharPluginManager extends PluginBase implements Listener
         $sender->sendMessage("プラグインリストを生成中…");
         $cache = [];
         foreach($data as $package){
+            var_dump($package);
             if(!isset($package["name"])){
                 $sender->sendMessage("エラー(必須のパラメーター[name]が設定されていません)");
                 $sender->sendMessage("アップデート処理に失敗しました");
