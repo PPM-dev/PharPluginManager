@@ -12,5 +12,5 @@ foreach ($result as $value) {
     $data[$i]["deps"] = $value["deps"];    
     $i = $i+1;
 }
-file_put_contents("Database.json",json_encode($data,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+file_put_contents("Database.json",json_encode($data,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 echo "success";

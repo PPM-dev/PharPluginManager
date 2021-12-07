@@ -1,0 +1,14 @@
+name: PharPluginManager
+version: 1.0.0
+author: PPM-dev
+api: 4.0.0
+main: ppm\PharPluginManager
+description: プラグインマネージャーです
+commands:
+    ppm:
+        description: ppmのメインコマンドです
+        usage: /ppm <install | uninstall | update | upgrade | addrepo | delrepo> [args]
+        permission: ppm.ppm
+permissions:
+    ppm.ppm:
+        default: op
