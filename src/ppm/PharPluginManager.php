@@ -72,11 +72,32 @@ class PharPluginManager extends PluginBase implements Listener
                         }
                         
                         $sender->sendMessage("プラグインのダウンロードを開始します");
-                        $result = @file_get_contents($list[$args[1]]["artifact_url"]);
+                        $options = stream_context_create(array('ssl' => array(
+                          'verify_peer'      => false,
+                          'verify_peer_name' => false
+                        )));
+                        
+                        $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
                             $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
                             $sender->sendMessage("プラグインのインストールに失敗しました");
+                            return True;
+                        }
+                        $sender->sendMessage("プラグインの依存関係を確認しています");
+                        foreach($list[$args[1]]["deps"] as $dep){
+                            $options = stream_context_create(array('ssl' => array(
+                                    'verify_peer'      => false,
+                                    'verify_peer_name' => false
+                                )));
+                                                    
+                            $result = @file_get_contents($list[$dep["name"]]["artifact_url"], false, $options);
+                            if(!$result){
+                                $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
+                                $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
+                                $sender->sendMessage("プラグインのインストールに失敗しました");
+                                return True;
+                            }
                         }
                         
                         $sender->sendMessage("プラグインを保存しています");
@@ -107,6 +128,12 @@ class PharPluginManager extends PluginBase implements Listener
                         $i = 0;
                         foreach($this->source->get("repo") as $url){
                             $sender->sendMessage("通信開始:".$url);
+                            $options = stream_context_create(array('ssl' => array(
+                                'verify_peer'      => false,
+                                'verify_peer_name' => false
+                            )));
+                                                    
+                            $result = @file_get_contents($url, false, $options);
                             $result = @file_get_contents($url);
                             $sender->sendMessage("通信完了:".$url);
                             if(!$result){
@@ -165,7 +192,12 @@ class PharPluginManager extends PluginBase implements Listener
                             return True;
                         }
                         $sender->sendMessage("レポジトリの存在確認を行います");
-                        $result = @file_get_contents($args[1]."Repo.json");
+                        $options = stream_context_create(array('ssl' => array(
+                          'verify_peer'      => false,
+                          'verify_peer_name' => false
+                        )));
+                        
+                        $result = @file_get_contents($args[1]."Repo.json", false, $options);
                         preg_match("/[0-9]{3}/", $http_response_header[0], $stcode);
                         if($stcode!==200){
                             $sender->sendMessage("URL:".$args[1]."Repo.json\nは200以外のステータスコードを返しました");
