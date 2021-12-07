@@ -277,10 +277,11 @@ class PharPluginManager extends PluginBase implements Listener
                 //var_dump($package);
                 $error = false;
                 if(!isset($package["name"])){
-                    //$sender->sendMessage("エラー(必須のパラメーター[name]が設定されていません)");
+                    $sender->sendMessage("エラー(必須のパラメーター[name]が設定されていません)");
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
                 }
+                $cache[$package["name"]]["name"] = $package["name"];
                 if(!isset($package["version"])){
                     //$sender->sendMessage("エラー(必須のパラメーター[version]が設定されていません):".$package["name"]);
                     $error = true;
@@ -310,7 +311,13 @@ class PharPluginManager extends PluginBase implements Listener
                 }
             }
         }
-        $this->checkdepsinlist($cache,$sender);
+        //$this->checkdepsinlist($cache,$sender);
+        $sender->sendMessage("データを記録中です");
+        $this->packagelist->set("list",$data);
+        $this->packagelist->save();
+        $this->packagelist->reload();
+        $sender->sendMessage("データの記録が完了しました");
+        $sender->sendMessage("アップデート作業が完了しました");
     }
     
     public function checkdepsinlist($data,$sender){
@@ -321,22 +328,16 @@ class PharPluginManager extends PluginBase implements Listener
                 if(!isset($dep)) continue;
                 if(!isset($dep["name"])){
                     $sender->sendMessage("エラー(".$value["name"]."の依存プラグインの項目が不正です");
-                    $sender->sendMessage("アップデート作業に失敗しました");
-                    return True;
+                    //$sender->sendMessage("アップデート作業に失敗しました");
+                    //return True;
                 }
                 if(!$this->checkplugininlist($data,$dep["name"])){
                     $sender->sendMessage("エラー(".$value["name"]."の依存プラグインがプラグインリストに見つかりません。");
-                    $sender->sendMessage("アップデート作業に失敗しました");
-                    return True;
+                    //$sender->sendMessage("アップデート作業に失敗しました");
+                    //return True;
                 }
             }
         }
         $sender->sendMessage("依存関係の確認が終了しました");
-        $sender->sendMessage("データを記録中です");
-        $this->packagelist->set("list",$data);
-        $this->packagelist->save();
-        $this->packagelist->reload();
-        $sender->sendMessage("データの記録が完了しました");
-        $sender->sendMessage("アップデート作業が完了しました");
     }
 }
