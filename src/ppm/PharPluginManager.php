@@ -266,7 +266,7 @@ class PharPluginManager extends PluginBase implements Listener
     
     public function checkplugininlist($list,$name){
         foreach($list as $value){
-            if($value["name"] == $name) return True;
+            if($value[0]["name"] == $name) return True;
         }
         return False;
     }
