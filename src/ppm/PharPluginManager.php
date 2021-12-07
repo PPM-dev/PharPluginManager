@@ -292,12 +292,12 @@ class PharPluginManager extends PluginBase implements Listener
                     return True;
                 }
                 $cache[$package["name"]]["artifact_url"] = $package["artifact_url"];
-                if(!isset($package["api"])||!isset($package["api"]["from"])||!isset($package["api"]["to"])){
+                if(!isset($package["api"])||!isset($package["api"][0])||!isset($package["api"][0]["from"])||!isset($package["api"][0]["to"])){
                     $sender->sendMessage("エラー(必須のパラメーター[api]が設定されていないか、不正です。):".$package["name"]);
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
                 }
-                $cache[$package["name"]]["api"] = $package["api"];
+                $cache[$package["name"]]["api"] = $package["api"][0];
                 if(!isset($package["deps"])){
                     $sender->sendMessage("エラー(必須のパラメーター[deps]が設定されていません):".$package["name"]);
                     $sender->sendMessage("アップデート処理に失敗しました");
