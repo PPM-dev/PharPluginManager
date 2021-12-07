@@ -41,7 +41,7 @@ class PharPluginManager extends PluginBase implements Listener
             $this->source->reload();
         }
         @mkdir($this->getDataFolder()."plugins/");
-        $this->getServer()->pluginmanager->loadPlugins($this->getDataFolder()."plugins/");            
+        $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/");            
     }
 
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
