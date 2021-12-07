@@ -274,7 +274,7 @@ class PharPluginManager extends PluginBase implements Listener
         $cache = [];
         foreach($data as $value){
             foreach($value as $package){
-                var_dump($package);
+                //var_dump($package);
                 $error = false;
                 if(!isset($package["name"])){
                     //$sender->sendMessage("エラー(必須のパラメーター[name]が設定されていません)");
