@@ -27,8 +27,7 @@ class PharPluginManager extends PluginBase implements Listener
     public $source;
     public $packagelist;
     public $plugin;
-    public $Main;
-    private static $main;
+    public $num;
 
     public function onEnable() :void
     {
@@ -58,6 +57,7 @@ class PharPluginManager extends PluginBase implements Listener
                         
                         $sender->sendMessage("指定されたプラグインを検索中です");
                         $list = $this->packagelist->get("list");
+                        $this->num = 0;
                         if(!$this->checkplugininlist($list,$args[1])){
                             $sender->sendMessage("プラグインが見つかりませんでした");
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
@@ -77,7 +77,7 @@ class PharPluginManager extends PluginBase implements Listener
                           'verify_peer_name' => false
                         )));
                         
-                        $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
+                        $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
                             $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
@@ -85,13 +85,20 @@ class PharPluginManager extends PluginBase implements Listener
                             return True;
                         }
                         $sender->sendMessage("プラグインの依存関係を確認しています");
-                        foreach($list[$args[1]]["deps"] as $dep){
+                        foreach($list[0][$this->num]["deps"] as $dep){
                             $options = stream_context_create(array('ssl' => array(
                                     'verify_peer'      => false,
                                     'verify_peer_name' => false
                                 )));
-                                                    
-                            $result = @file_get_contents($list[$dep["name"]]["artifact_url"], false, $options);
+                            
+                            $this->num = 0;
+                            foreach($list as $value){
+                                foreach($value as $package){
+                                    $this->num = $this->num + 1;
+                                    if($package["name"] == $dep["name"]) return true;
+                                }
+                            }
+                            $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                             if(!$result){
                                 $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
                                 $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
@@ -161,6 +168,7 @@ class PharPluginManager extends PluginBase implements Listener
                         $sender->sendMessage("プラグインが見つかりました");
                         $sender->sendMessage("指定されたプラグインを検索中です");
                         $list = $this->packagelist->get("list");
+                        $this->num = 0;
                         if(!$this->checkplugininlist($list,$args[1])){
                             $sender->sendMessage("プラグインが見つかりませんでした");
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
@@ -179,7 +187,7 @@ class PharPluginManager extends PluginBase implements Listener
                             'verify_peer_name' => false
                         )));
                                                 
-                        $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
+                        $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
                             $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
@@ -249,7 +257,7 @@ class PharPluginManager extends PluginBase implements Listener
     
     public function checkAPIversion($name,$api){
         $list = $this->packagelist->get("list");
-        $apiversion = $list[$name]["api"];
+        $apiversion = $list[0][$this->num]["api"];
         $from = $apiversion["from"];
         $to = $apiversion["to"];
         $from_split = explode(".",$from);
@@ -267,6 +275,7 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkplugininlist($list,$name){
         foreach($list as $value){
             foreach($value as $package){
+                $this->num = $this->num + 1;
                 if($package["name"] == $name) return true;
             }
         }
