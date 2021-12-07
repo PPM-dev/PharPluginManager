@@ -280,25 +280,25 @@ class PharPluginManager extends PluginBase implements Listener
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
                 }
-                if(!isset($package["name"]["version"])){
+                if(!isset($package["version"])){
                     $sender->sendMessage("エラー(必須のパラメーター[version]が設定されていません):".$package["name"]);
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
                 }
                 $cache[$package["name"]]["version"] = $package["version"];
-               if(!isset($package["name"]["artifact_url"])){
+               if(!isset($package["artifact_url"])){
                     $sender->sendMessage("エラー(必須のパラメーター[artifact_url]が設定されていません):".$package["name"]);
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
                 }
                 $cache[$package["name"]]["artifact_url"] = $package["artifact_url"];
-                if(!isset($package["name"]["api"])||!isset($package["name"]["api"]["from"])||!isset($package["name"]["api"]["to"])){
+                if(!isset($package["api"])||!isset($package["api"]["from"])||!isset($package["api"]["to"])){
                     $sender->sendMessage("エラー(必須のパラメーター[api]が設定されていないか、不正です。):".$package["name"]);
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
                 }
                 $cache[$package["name"]]["api"] = $package["api"];
-                if(!isset($package["name"]["deps"])){
+                if(!isset($package["deps"])){
                     $sender->sendMessage("エラー(必須のパラメーター[deps]が設定されていません):".$package["name"]);
                     $sender->sendMessage("アップデート処理に失敗しました");
                     return True;
