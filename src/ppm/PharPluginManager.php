@@ -317,6 +317,7 @@ class PharPluginManager extends PluginBase implements Listener
         $sender->sendMessage("依存関係を確認中です");
         foreach($data as $value){
             foreach($value["deps"] as $dep){
+                if(!isset($dep)) continue;
                 if(!isset($dep["name"])){
                     $sender->sendMessage("エラー(".$value["name"]."の依存プラグインの項目が不正です");
                     $sender->sendMessage("アップデート作業に失敗しました");
