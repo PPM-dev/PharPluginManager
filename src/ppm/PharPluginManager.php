@@ -255,20 +255,20 @@ class PharPluginManager extends PluginBase implements Listener
         $from_split = explode(".",$from);
         $to_split = explode(".",$to);
         $api_split = explode(".",$api);
-        if($from_split[0] > $api_split[0]) return False;
-        if($from_split[1] > $api_split[1]) return False;
-        if($from_split[2] > $api_split[2]) return False;
-        if($to_split[0] < $api_split[0]) return False;
-        if($to_split[1] < $api_split[1]) return False;
-        if($to_split[2] < $api_split[2]) return False;
-        return True;
+        if($from_split[0] > $api_split[0]) return false;
+        if($from_split[1] > $api_split[1]) return false;
+        if($from_split[2] > $api_split[2]) return false;
+        if($to_split[0] < $api_split[0]) return false;
+        if($to_split[1] < $api_split[1]) return false;
+        if($to_split[2] < $api_split[2]) return false;
+        return true;
     }
     
     public function checkplugininlist($list,$name){
         foreach($list as $value){
-            if($value[0]["name"] == $name) return True;
+            if($value[0]["name"] == $name) return true;
         }
-        return False;
+        return false;
     }
     
     public function makelist($data,$sender){
