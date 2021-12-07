@@ -265,15 +265,15 @@ class PharPluginManager extends PluginBase implements Listener
 		$version = new VersionString($from);
 		if($version->getBaseVersion() !== $myVersion->getBaseVersion()){
 			if($version->getMajor() !== $myVersion->getMajor()){
-				continue;
+				return false;
 			}
 
 			if($version->getMinor() > $myVersion->getMinor()){
-					continue;
+				return false;
 			}
 
 			if($version->getMinor() === $myVersion->getMinor() and $version->getPatch() > $myVersion->getPatch()){
-				continue;
+				return false;
 			}
 		return true;
 		}
