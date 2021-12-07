@@ -65,6 +65,7 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
                             return True;
                         }
+                        /*
                         $sender->sendMessage("プラグインが現在使用中のバージョンで使用できるか確認しています。");
                         if(!$this->checkAPIversion($args[1],$this->getServer()->getApiVersion())){
                             $sender->sendMessage("指定されたプラグインは現在使用中のバージョンには対応していません");
@@ -72,7 +73,7 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("それでも改善しない場合はレポジトリの管理者に問い合わせてください");
                             return True;
                         }
-                        
+                        */
                         $sender->sendMessage("プラグインのダウンロードを開始します");
                         $options = stream_context_create(array('ssl' => array(
                           'verify_peer'      => false,
@@ -176,6 +177,7 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
                             return True;
                         }
+                        /*
                         $sender->sendMessage("プラグインが現在使用中のバージョンで使用できるか確認しています。");
                         if(!$this->checkAPIversion($args[1],$this->getServer()->getApiVersion())){
                             $sender->sendMessage("指定されたプラグインは現在使用中のバージョンには対応していません");
@@ -183,6 +185,7 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("それでも改善しない場合はレポジトリの管理者に問い合わせてください");
                             return True;
                         }
+                        */
                         $sender->sendMessage("プラグインのダウンロードを開始します");
                         $options = stream_context_create(array('ssl' => array(
                             'verify_peer'      => false,
