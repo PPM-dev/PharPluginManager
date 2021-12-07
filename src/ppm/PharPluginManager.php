@@ -21,8 +21,7 @@ use pocketmine\command\CommandSender;
 /* Event */
 use pocketmine\event\Listener;
 
-/* plugin */
-use pocketmine\plugin\ApiVersion;
+/* util */
 
 class PharPluginManager extends PluginBase implements Listener
 {
@@ -261,8 +260,24 @@ class PharPluginManager extends PluginBase implements Listener
         $list = $this->packagelist->get("list");
         $apiversion = $list[0][$this->num]["api"];
         $from = $apiversion[0]["from"];
-        if(!ApiVersion::isCompatible($api, $from)) return false;
-        return true;
+    	$myVersion = new VersionString($api);
+		$version = new VersionString($from);
+		if($version->getBaseVersion() !== $myVersion->getBaseVersion()){
+			if($version->getMajor() !== $myVersion->getMajor()){
+				continue;
+			}
+
+			if($version->getMinor() > $myVersion->getMinor()){
+					continue;
+			}
+
+			if($version->getMinor() === $myVersion->getMinor() and $version->getPatch() > $myVersion->getPatch()){
+				continue;
+			}
+		return true;
+		}
+
+		return false;
     }
     
     public function checkplugininlist($list,$name){
