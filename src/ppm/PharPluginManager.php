@@ -305,7 +305,7 @@ class PharPluginManager extends PluginBase implements Listener
                 $cache[$package["name"]]["deps"] = $package["deps"];
                 
                 if($error){
-                    $cache = array_diff($cache, array($package["name"]));
+                    unset($cache[$package["name"]]);
                     $cache = array_values($cache);
                 }
             }
