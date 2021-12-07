@@ -22,6 +22,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 
 /* util */
+use pocketmine\utils\VersionString;
 
 class PharPluginManager extends PluginBase implements Listener
 {
