@@ -134,7 +134,6 @@ class PharPluginManager extends PluginBase implements Listener
                             )));
                                                     
                             $result = @file_get_contents($url, false, $options);
-                            $result = @file_get_contents($url);
                             $sender->sendMessage("通信完了:".$url);
                             if(!$result){
                                 $sender->sendMessage("エラー(通信失敗):".$url);
@@ -175,7 +174,12 @@ class PharPluginManager extends PluginBase implements Listener
                             return True;
                         }
                         $sender->sendMessage("プラグインのダウンロードを開始します");
-                        $result = @file_get_contents($list[$args[1]]["artifact_url"]);
+                        $options = stream_context_create(array('ssl' => array(
+                            'verify_peer'      => false,
+                            'verify_peer_name' => false
+                        )));
+                                                
+                        $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
                             $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
