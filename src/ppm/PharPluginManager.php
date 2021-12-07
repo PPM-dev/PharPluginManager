@@ -316,6 +316,7 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkdepsinlist($data,$sender){
         $sender->sendMessage("依存関係を確認中です");
         foreach($data as $value){
+            ver_dump($value);
             foreach($value["deps"] as $dep){
                 if(!isset($dep)) continue;
                 if(!isset($dep["name"])){
