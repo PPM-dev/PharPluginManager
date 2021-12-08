@@ -122,6 +122,7 @@ class PharPluginManager extends PluginBase implements Listener
                         }
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         $result = glob($this->getDataFolder()."plugins/*.phar");
+                        var_dump($result);
                         if(!in_array("./".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは現在インストールされていないようです");
                             return True;
