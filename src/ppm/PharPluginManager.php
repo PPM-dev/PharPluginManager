@@ -63,17 +63,17 @@ class PharPluginManager extends PluginBase implements Listener
                         if(!$this->checkplugininlist($list,$args[1])){
                             $sender->sendMessage("プラグインが見つかりませんでした");
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
-                            return True;
+                            return true;
                         }
-                        /*
+                        
                         $sender->sendMessage("プラグインが現在使用中のバージョンで使用できるか確認しています。");
                         if(!$this->checkAPIversion($args[1],$this->getServer()->getApiVersion())){
                             $sender->sendMessage("指定されたプラグインは現在使用中のバージョンには対応していません");
                             $sender->sendMessage("30分後くらいに/ppm updateを実行してみてください");
                             $sender->sendMessage("それでも改善しない場合はレポジトリの管理者に問い合わせてください");
-                            return True;
+                            return true;
                         }
-                        */
+                        
                         $sender->sendMessage("プラグインのダウンロードを開始します");
                         $options = stream_context_create(array('ssl' => array(
                           'verify_peer'      => false,
@@ -107,7 +107,7 @@ class PharPluginManager extends PluginBase implements Listener
                                 $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
                                 $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
                                 $sender->sendMessage("プラグインのインストールに失敗しました");
-                                return True;
+                                return true;
                             }
                         }
                         
@@ -119,13 +119,13 @@ class PharPluginManager extends PluginBase implements Listener
                     case "uninstall":
                         if(!isset($args[1])){
                             $sender->sendMessage("プラグイン名を指定してください");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         $result = glob($this->getDataFolder()."plugins/*.phar");
                         if(!in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは現在インストールされていないようです");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("プラグインが見つかりました");
                         $sender->sendMessage("プラグインをアンインストール中です");
@@ -162,13 +162,13 @@ class PharPluginManager extends PluginBase implements Listener
                     case "upgrade":
                         if(!isset($args[1])){
                             $sender->sendMessage("プラグイン名を指定してください");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         $result = glob($this->getDataFolder()."plugins/*.phar");
                         if(!in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは現在インストールされていないようです");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("プラグインが見つかりました");
                         $sender->sendMessage("指定されたプラグインを検索中です");
@@ -177,17 +177,17 @@ class PharPluginManager extends PluginBase implements Listener
                         if(!$this->checkplugininlist($list,$args[1])){
                             $sender->sendMessage("プラグインが見つかりませんでした");
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
-                            return True;
+                            return true;
                         }
-                        /*
+                        
                         $sender->sendMessage("プラグインが現在使用中のバージョンで使用できるか確認しています。");
                         if(!$this->checkAPIversion($args[1],$this->getServer()->getApiVersion())){
                             $sender->sendMessage("指定されたプラグインは現在使用中のバージョンには対応していません");
                             $sender->sendMessage("30分後に/ppm updateを実行してみてください");
                             $sender->sendMessage("それでも改善しない場合はレポジトリの管理者に問い合わせてください");
-                            return True;
+                            return true;
                         }
-                        */
+                        
                         $sender->sendMessage("プラグインのダウンロードを開始します");
                         $options = stream_context_create(array('ssl' => array(
                             'verify_peer'      => false,
@@ -208,7 +208,7 @@ class PharPluginManager extends PluginBase implements Listener
                     case "addrepo":
                         if(!isset($args[1])){
                             $sender->sendMessage("urlを指定してください");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("レポジトリの存在確認を行います");
                         $options = stream_context_create(array('ssl' => array(
@@ -222,7 +222,7 @@ class PharPluginManager extends PluginBase implements Listener
                         if($stcode[0]!=200){
                             $sender->sendMessage("URL:".$args[1]."Repo.json\nは200以外のステータスコードを返しました");
                             $sender->sendMessage("レポジトリの管理者にお問合せください");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("レポジトリの存在確認に成功しました");
                         $sender->sendMessage("レポジトリを登録しています");
@@ -237,13 +237,13 @@ class PharPluginManager extends PluginBase implements Listener
                     case "delrepo":
                         if(!isset($args[1])){
                             $sender->sendMessage("削除したいレポジトリを指定してください");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("登録されているレポジトリを検索中です");
                         $repoarray = $this->source->get("repo");
                         if(!in_array($args[1]."Repo.json",$repoarray)){
                             $sender->sendMessage("指定されたレポジトリは登録されていないようです");
-                            return True;
+                            return true;
                         }
                         $sender->sendMessage("レポジトリを削除しています");
                         $result = array_diff($repoarray, array($args[1]."Repo.json"));
@@ -254,7 +254,7 @@ class PharPluginManager extends PluginBase implements Listener
                         $sender->sendMessage("レポジトリの削除に成功しました");
                         break;
                     default:
-                        
+                        $sender->sendMessage("/ppm  <install | uninstall | update | upgrade | addrepo | delrepo> [args]");
                         break;
                         
                 }
@@ -265,38 +265,37 @@ class PharPluginManager extends PluginBase implements Listener
     
     public function checkAPIversion($name,$api){
         $list = $this->packagelist->get("list");
-        $apiversion = $list[0][$this->num]["api"];
+        $apiversion = $list[$name]["api"];
         $from = $apiversion[0]["from"];
+        
     	$myVersion = new VersionString($api);
-		$version = new VersionString($from);
-		if($version->getBaseVersion() !== $myVersion->getBaseVersion()){
-			if($version->getMajor() !== $myVersion->getMajor()){
-				return false;
+	    if(!is_array($from)){
+	        $from = [$from];
+	    }
+		foreach($from as $versionStr){
+			$version = new VersionString($versionStr);
+			if($version->getBaseVersion() !== $myVersion->getBaseVersion()){
+				if($version->getMajor() !== $myVersion->getMajor()){
+					continue;
+				}
+		
+				if($version->getMinor() > $myVersion->getMinor()){ 
+					continue;
+				}
+		
+				if($version->getMinor() === $myVersion->getMinor() and $version->getPatch() > $myVersion->getPatch()){ 
+					continue;
+				}
 			}
-
-			if($version->getMinor() > $myVersion->getMinor()){
-				return false;
-			}
-
-			if($version->getMinor() === $myVersion->getMinor() and $version->getPatch() > $myVersion->getPatch()){
-				return false;
-			}
-			
-		return true;
+		
+			return true;
 		}
-
-		return true;
+		
+		return false;
     }
     
     public function checkplugininlist($list,$name){
-        /*
-        foreach($list as $value){
-            foreach($value as $package){
-                if($package["name"] == $name) return true;
-                $this->num = $this->num + 1;
-            }
-        }
-        */
+        
         try{
             if(isset($list[$name])) return true;
         }catch(Exception $e){
@@ -348,14 +347,7 @@ class PharPluginManager extends PluginBase implements Listener
                 }*/
             }
         }
-        //$this->checkdepsinlist($cache,$sender);
-        
-        $sender->sendMessage("データを記録中です");
-        $this->packagelist->set("list",$cache);
-        $this->packagelist->save();
-        $this->packagelist->reload();
-        $sender->sendMessage("データの記録が完了しました");
-        $sender->sendMessage("アップデート作業が完了しました");
+        $this->checkdepsinlist($cache,$sender);
     }
     
     public function checkdepsinlist($data,$sender){
@@ -377,5 +369,11 @@ class PharPluginManager extends PluginBase implements Listener
             }
         }
         $sender->sendMessage("依存関係の確認が終了しました");
+        $sender->sendMessage("データを記録中です");
+        $this->packagelist->set("list",$cache);
+        $this->packagelist->save();
+        $this->packagelist->reload();
+        $sender->sendMessage("データの記録が完了しました");
+        $sender->sendMessage("アップデート作業が完了しました");
     }
 }
