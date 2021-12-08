@@ -79,9 +79,8 @@ class PharPluginManager extends PluginBase implements Listener
                           'verify_peer'      => false,
                           'verify_peer_name' => false
                         )));
-                        var_dump($list[1]);
-                        var_dump($list[0][$this->num]);
-                        $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
+
+                        $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
                             $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
@@ -89,7 +88,7 @@ class PharPluginManager extends PluginBase implements Listener
                             return True;
                         }
                         $sender->sendMessage("プラグインの依存関係を確認しています");
-                        foreach($list[0][$this->num]["deps"] as $dep){
+                        foreach($list[$args[1]]["deps"] as $dep){
                             $options = stream_context_create(array('ssl' => array(
                                     'verify_peer'      => false,
                                     'verify_peer_name' => false
@@ -103,7 +102,7 @@ class PharPluginManager extends PluginBase implements Listener
                                 }
                             }
                             
-                            $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
+                            $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
                             if(!$result){
                                 $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
                                 $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
@@ -195,7 +194,7 @@ class PharPluginManager extends PluginBase implements Listener
                             'verify_peer_name' => false
                         )));
                                                 
-                        $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
+                        $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
                             $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
@@ -219,7 +218,7 @@ class PharPluginManager extends PluginBase implements Listener
                         
                         $result = @file_get_contents($args[1]."Repo.json", false, $options);
                         preg_match("/[0-9]{3}/", $http_response_header[0], $stcode);
-                        var_dump($stcode);
+                        
                         if($stcode[0]!=200){
                             $sender->sendMessage("URL:".$args[1]."Repo.json\nは200以外のステータスコードを返しました");
                             $sender->sendMessage("レポジトリの管理者にお問合せください");
@@ -290,12 +289,15 @@ class PharPluginManager extends PluginBase implements Listener
     }
     
     public function checkplugininlist($list,$name){
+        /*
         foreach($list as $value){
             foreach($value as $package){
                 if($package["name"] == $name) return true;
                 $this->num = $this->num + 1;
             }
         }
+        */
+        if($list[$name]) return true;
         return false;
     }
     
@@ -343,7 +345,7 @@ class PharPluginManager extends PluginBase implements Listener
         }
         //$this->checkdepsinlist($cache,$sender);
         $sender->sendMessage("データを記録中です");
-        $this->packagelist->set("list",$data);
+        $this->packagelist->set("list",$cache);
         $this->packagelist->save();
         $this->packagelist->reload();
         $sender->sendMessage("データの記録が完了しました");
