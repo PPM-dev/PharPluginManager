@@ -290,8 +290,8 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkplugininlist($list,$name){
         foreach($list as $value){
             foreach($value as $package){
-                $this->num = $this->num + 1;
                 if($package["name"] == $name) return true;
+                $this->num = $this->num + 1;
             }
         }
         return false;
