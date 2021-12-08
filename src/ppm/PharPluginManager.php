@@ -154,6 +154,7 @@ class PharPluginManager extends PluginBase implements Listener
                             $result = json_decode($result,true);
                             $sender->sendMessage("受信データ解析終了:".$url);
                             $cache[$i] = $result; 
+                            $i = $i +1;
                         }
                         $this->makelist($cache,$sender);
                         break;
@@ -338,7 +339,6 @@ class PharPluginManager extends PluginBase implements Listener
                 }
             }
         }
-        var_dump($data);
         //$this->checkdepsinlist($cache,$sender);
         $sender->sendMessage("データを記録中です");
         $this->packagelist->set("list",$data);
