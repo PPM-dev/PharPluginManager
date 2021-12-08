@@ -297,7 +297,7 @@ class PharPluginManager extends PluginBase implements Listener
             }
         }
         */
-        if($list[$name]) return true;
+        if(in_array($name,$list)) return true;
         return false;
     }
     
@@ -336,14 +336,15 @@ class PharPluginManager extends PluginBase implements Listener
                     $error = true;
                 }
                 $cache[$package["name"]]["deps"] = $package["deps"];
-                
+                /*
                 if($error){
                     unset($cache[$package["name"]]);
                     $cache = array_values($cache);
-                }
+                }*/
             }
         }
         //$this->checkdepsinlist($cache,$sender);
+        
         $sender->sendMessage("データを記録中です");
         $this->packagelist->set("list",$cache);
         $this->packagelist->save();
