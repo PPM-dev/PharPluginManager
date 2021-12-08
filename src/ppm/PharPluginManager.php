@@ -79,7 +79,7 @@ class PharPluginManager extends PluginBase implements Listener
                           'verify_peer'      => false,
                           'verify_peer_name' => false
                         )));
-                        
+                        var_dump($list[0][$this->num]["artifact_url"]);
                         $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
@@ -122,7 +122,6 @@ class PharPluginManager extends PluginBase implements Listener
                         }
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         $result = glob($this->getDataFolder()."plugins/*.phar");
-                        var_dump($result);
                         if(!in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは現在インストールされていないようです");
                             return True;
