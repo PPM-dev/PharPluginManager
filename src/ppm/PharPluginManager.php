@@ -297,7 +297,12 @@ class PharPluginManager extends PluginBase implements Listener
             }
         }
         */
-        if(in_array($name,$list)) return true;
+        try{
+            if(isset($list[$name])) return true;
+        }catch(Exception $e){
+            return false;
+        }
+        
         return false;
     }
     
