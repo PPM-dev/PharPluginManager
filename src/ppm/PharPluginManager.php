@@ -123,7 +123,7 @@ class PharPluginManager extends PluginBase implements Listener
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         $result = glob($this->getDataFolder()."plugins/*.phar");
                         var_dump($result);
-                        if(!in_array("./".$args[1].".phar", $result)){
+                        if(!in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは現在インストールされていないようです");
                             return True;
                         }
@@ -165,7 +165,7 @@ class PharPluginManager extends PluginBase implements Listener
                         }
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         $result = glob($this->getDataFolder()."plugins/*.phar");
-                        if(!in_array("./".$args[1].".phar", $result)){
+                        if(!in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは現在インストールされていないようです");
                             return True;
                         }
@@ -217,7 +217,7 @@ class PharPluginManager extends PluginBase implements Listener
                         
                         $result = @file_get_contents($args[1]."Repo.json", false, $options);
                         preg_match("/[0-9]{3}/", $http_response_header[0], $stcode);
-                        if($stcode!==200){
+                        if($stcode!=200){
                             $sender->sendMessage("URL:".$args[1]."Repo.json\nは200以外のステータスコードを返しました");
                             $sender->sendMessage("レポジトリの管理者にお問合せください");
                             return True;
