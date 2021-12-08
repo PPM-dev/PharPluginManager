@@ -79,7 +79,8 @@ class PharPluginManager extends PluginBase implements Listener
                           'verify_peer'      => false,
                           'verify_peer_name' => false
                         )));
-                        
+                        var_dump($list);
+                        var_dump($list[0][$this->num]);
                         $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
@@ -101,8 +102,7 @@ class PharPluginManager extends PluginBase implements Listener
                                     if($package["name"] == $dep["name"]) return true;
                                 }
                             }
-                            var_dump($list);
-                            var_dump($list[0][$this->num]);
+                            
                             $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                             if(!$result){
                                 $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
