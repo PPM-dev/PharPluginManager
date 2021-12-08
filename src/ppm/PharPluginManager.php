@@ -79,8 +79,7 @@ class PharPluginManager extends PluginBase implements Listener
                           'verify_peer'      => false,
                           'verify_peer_name' => false
                         )));
-                        var_dump($list[0][$this->num]);
-                        var_dump($list[0][$this->num]["artifact_url"]);
+                        
                         $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                         if(!$result){
                             $sender->sendMessage("エラー:ダウンロードに失敗しました");
