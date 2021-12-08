@@ -339,6 +339,7 @@ class PharPluginManager extends PluginBase implements Listener
                 }
             }
         }
+        var_dump($data);
         //$this->checkdepsinlist($cache,$sender);
         $sender->sendMessage("データを記録中です");
         $this->packagelist->set("list",$data);
