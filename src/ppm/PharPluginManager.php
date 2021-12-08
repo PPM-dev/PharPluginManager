@@ -79,7 +79,7 @@ class PharPluginManager extends PluginBase implements Listener
                           'verify_peer'      => false,
                           'verify_peer_name' => false
                         )));
-                        var_dump($list);
+                        var_dump($list[1]);
                         var_dump($list[0][$this->num]);
                         $result = @file_get_contents($list[0][$this->num]["artifact_url"], false, $options);
                         if(!$result){
