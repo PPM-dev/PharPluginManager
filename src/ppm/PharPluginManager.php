@@ -217,7 +217,7 @@ class PharPluginManager extends PluginBase implements Listener
                         
                         $result = @file_get_contents($args[1]."Repo.json", false, $options);
                         preg_match("/[0-9]{3}/", $http_response_header[0], $stcode);
-                        if($stcode!=200){
+                        if($stcode[1]!=200){
                             $sender->sendMessage("URL:".$args[1]."Repo.json\nは200以外のステータスコードを返しました");
                             $sender->sendMessage("レポジトリの管理者にお問合せください");
                             return True;
