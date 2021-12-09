@@ -153,7 +153,7 @@ class PharPluginManager extends PluginBase implements Listener
                             @file_put_contents($this->getDataFolder()."plugins/".$dep["name"].".phar",$result);
                             
                             $sender->sendMessage("保存完了しました");
-                            $installeddeplist = $installeddeplist + array($dep[name]);
+                            $installeddeplist = $installeddeplist + array($dep[$name]);
                                                 
                         }
                         
