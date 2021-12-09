@@ -140,7 +140,7 @@ class PharPluginManager extends PluginBase implements Listener
                                     'verify_peer_name' => false
                                 )));
                             
-                            $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
+                            $result = @file_get_contents($list[$dep["name"]]["artifact_url"], false, $options);
                             if(!$result){
                                 $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
                                 $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
