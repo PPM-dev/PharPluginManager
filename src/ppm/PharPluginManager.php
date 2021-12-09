@@ -65,6 +65,14 @@ class PharPluginManager extends PluginBase implements Listener
                             return True;
                         }
                         
+                        $sender->sendMessage("インストールされているプラグインを検索中です");
+                        
+                        $result = glob($this->getDataFolder()."plugins/*.phar");
+                            if(in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
+                            $sender->sendMessage("そのプラグインは既にインストールされているようです");
+                            return true;
+                        }
+                        
                         $sender->sendMessage("指定されたプラグインを検索中です");
                         $list = $this->packagelist->get("list");
                         $this->num = 0;
