@@ -32,7 +32,6 @@ class PharPluginManager extends PluginBase implements Listener
     public $source;
     public $packagelist;
     public $plugin;
-    public $num;
 
     public function onEnable() :void
     {
@@ -62,20 +61,19 @@ class PharPluginManager extends PluginBase implements Listener
                     case "install":
                         if(!isset($args[1])){
                             $sender->sendMessage("プラグイン名を指定してください");
-                            return True;
+                            return true;
                         }
                         
                         $sender->sendMessage("インストールされているプラグインを検索中です");
                         
                         $result = glob($this->getDataFolder()."plugins/*.phar");
-                            if(in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
+                        if(in_array($this->getDataFolder()."plugins/".$args[1].".phar", $result)){
                             $sender->sendMessage("そのプラグインは既にインストールされているようです");
                             return true;
                         }
                         
                         $sender->sendMessage("指定されたプラグインを検索中です");
                         $list = $this->packagelist->get("list");
-                        $this->num = 0;
                         if(!$this->checkplugininlist($list,$args[1])){
                             $sender->sendMessage("プラグインが見つかりませんでした");
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
@@ -117,14 +115,6 @@ class PharPluginManager extends PluginBase implements Listener
                                     'verify_peer'      => false,
                                     'verify_peer_name' => false
                                 )));
-                            
-                            $this->num = 0;
-                            foreach($list as $value){
-                                foreach($value as $package){
-                                    $this->num = $this->num + 1;
-                                    if($package["name"] == $dep["name"]) return true;
-                                }
-                            }
                             
                             $result = @file_get_contents($list[$args[1]]["artifact_url"], false, $options);
                             if(!$result){
@@ -197,7 +187,6 @@ class PharPluginManager extends PluginBase implements Listener
                         $sender->sendMessage("プラグインが見つかりました");
                         $sender->sendMessage("指定されたプラグインを検索中です");
                         $list = $this->packagelist->get("list");
-                        $this->num = 0;
                         if(!$this->checkplugininlist($list,$args[1])){
                             $sender->sendMessage("プラグインが見つかりませんでした");
                             $sender->sendMessage("入力値を確認するか、/ppm updateを実行してください");
