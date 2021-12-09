@@ -9,15 +9,25 @@
             }
         ],
     "deps": []
-},{
+}, {
     "name": "PPM",
     "version": "1.0.0",
     "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
     "api": [
         {
-            "from": "4.0.0",
-            "to": "4.0.0"
-            }
+            "from": "4.0.0"
+        }
+        ],
+    "deps": []
+}, {
+    "name": "ppm-with-protocol",
+    "version": "1.0.0",
+    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
+    "mcpe-protocol": 475,
+    "api": [
+        {
+            "from": ["3.0.0","4.0.0"]
+        }
         ],
     "deps": []
 }

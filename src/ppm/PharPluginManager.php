@@ -24,6 +24,9 @@ use pocketmine\event\Listener;
 /* util */
 use pocketmine\utils\VersionString;
 
+/* protocolinfo */
+use pocketmine\network\mcpe\protocol\ProtocolInfo;
+
 class PharPluginManager extends PluginBase implements Listener
 {
     public $source;
@@ -71,6 +74,14 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("指定されたプラグインは現在使用中のバージョンには対応していません");
                             $sender->sendMessage("30分後くらいに/ppm updateを実行してみてください");
                             $sender->sendMessage("それでも改善しない場合はレポジトリの管理者に問い合わせてください");
+                            return true;
+                        }
+                        
+                        $sender->sendMessage("指定のプラグインが現在のプロトコルで動作するか確認しています");
+                                                
+                        if(!$this->checkNetworkProtocol($args[1],$this->packagelist->get("list"),$sender,ProtocolInfo::CURRENT_PROTOCOL)){
+                            $sender->sendMessage("指定されたプラグインは現在のネットワークプロトコルには対応していません");
+                            $sender->sendMessage("PocketMine-MP.pharのアップデートをするか、デベロッパーの対応をお待ちください");
                             return true;
                         }
                         
@@ -188,6 +199,15 @@ class PharPluginManager extends PluginBase implements Listener
                             return true;
                         }
                         
+                        
+                        $sender->sendMessage("指定のプラグインが現在のプロトコルで動作するか確認しています");
+                        
+                        if(!$this->checkNetworkProtocol($args[1],$this->packagelist->get("list"),$sender,ProtocolInfo::CURRENT_PROTOCOL)){
+                            $sender->sendMessage("指定されたプラグインは現在のネットワークプロトコルには対応していません");
+                            $sender->sendMessage("PocketMine-MP.pharのアップデートをするか、デベロッパーの対応をお待ちください");
+                            return true;
+                        }
+                        
                         $sender->sendMessage("プラグインのダウンロードを開始します");
                         $options = stream_context_create(array('ssl' => array(
                             'verify_peer'      => false,
@@ -294,6 +314,21 @@ class PharPluginManager extends PluginBase implements Listener
 		return false;
     }
     
+    public function checkNetworkProtocol($name,$list,$sender,$protocol){
+        try{
+            if($list[$name]["mcpe-protocol"] == $protocol){
+                $sender->sendMessage("指定されたプラグインは現在のネットワークプロトコルに対応しています");
+                return true;
+            }else{
+                return false;
+            }
+        }catch (Exception $e){
+            $sender->sendMessage("指定されたプラグインにはネットワークプロトコルの指定は見つかりませんでした");
+            $sender->sendMessage("インストールを続行します");
+            return true;
+        }
+    }
+    
     public function checkplugininlist($list,$name){
         
         try{
@@ -340,6 +375,10 @@ class PharPluginManager extends PluginBase implements Listener
                     $error = true;
                 }
                 $cache[$package["name"]]["deps"] = $package["deps"];
+                
+                if(isset($package["mcpe-protocol"])){
+                    $cache[$package["name"]]["mcpe-protocol"] = $package["mcpe-protocol"];
+                }
                 /*
                 if($error){
                     unset($cache[$package["name"]]);
