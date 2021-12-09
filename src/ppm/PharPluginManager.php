@@ -123,18 +123,21 @@ class PharPluginManager extends PluginBase implements Listener
                                 $sender->sendMessage("インストールに失敗しました");
                                 
                                 $this->rollback_by_error_in_installing_deps($args[1],$installeddeplist,$sender);
+                                return true;
                             }
                             
                             if(!$this->checkAPIversion($dep["name"],$this->getServer()->getApiVersion())){
                                 $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")が現在使用しているAPIバージョンに対応していません");
                                 $sender->sendMessage("インストールに失敗しました");
                                 $this->rollback_by_error_in_installing_deps($args[1],$installeddeplist,$sender);
+                                return true;
                             }
                             
                             if(!$this->checkNetworkProtocol($dep["name"],$this->packagelist->get("list"),$sender,ProtocolInfo::CURRENT_PROTOCOL)){
                                 $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")は現在のネットワークプロトコルに対応していません");
                                 $sender->sendMessage("インストールに失敗しました");
                                 $this->rollback_by_error_in_installing_deps($args[1],$installeddeplist,$sender);
+                                return true;
                             }
                             
                             $options = stream_context_create(array('ssl' => array(
