@@ -115,24 +115,26 @@ class PharPluginManager extends PluginBase implements Listener
                         $sender->sendMessage("保存完了しました");
                                                 
                         $sender->sendMessage("プラグインの依存関係を確認しています");
+                        $installeddeplist = [];
                         foreach($list[$args[1]]["deps"] as $dep){
                             
                             if(!$this->checkplugininlist($list,$dep["name"])){
                                 $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")が見つかりません");
                                 $sender->sendMessage("インストールに失敗しました");
-                                return true;
+                                
+                                $this->rollback_by_error_in_installing_deps($args[1],$installeddeplist,$sender);
                             }
                             
                             if(!$this->checkAPIversion($dep["name"],$this->getServer()->getApiVersion())){
                                 $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")が現在使用しているAPIバージョンに対応していません");
                                 $sender->sendMessage("インストールに失敗しました");
-                                return true;
+                                $this->rollback_by_error_in_installing_deps($args[1],$installeddeplist,$sender);
                             }
                             
                             if(!$this->checkNetworkProtocol($dep["name"],$this->packagelist->get("list"),$sender,ProtocolInfo::CURRENT_PROTOCOL)){
                                 $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")は現在のネットワークプロトコルに対応していません");
                                 $sender->sendMessage("インストールに失敗しました");
-                                return true;
+                                $this->rollback_by_error_in_installing_deps($args[1],$installeddeplist,$sender);
                             }
                             
                             $options = stream_context_create(array('ssl' => array(
@@ -150,6 +152,7 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("依存プラグイン(".$dep["name"].")を保存しています");
                             @file_put_contents($this->getDataFolder()."plugins/".$dep["name"].".phar",$result);
                             $sender->sendMessage("保存完了しました");
+                            $installeddeplist = $installeddeplist + array($dep[name]);
                                                 
                         }
                         
@@ -374,6 +377,21 @@ class PharPluginManager extends PluginBase implements Listener
             return true;
         }
     }
+    
+    public function rollback_by_error_in_installing_deps($mainpluginname,$list,$sender){
+        $sender->sendMessage("エラーを検知しました。ロールバックを開始します");
+        $sender->sendMessage("プラグインをアンインストール中です");
+        @unlink($this->getDataFolder()."plugins/".$mainpluginname.".phar");
+        $sender->sendMessage("アンインストールしました");
+        $sender->sendMessage("依存プラグインをアンインストールしています");
+        foreach($list as $dep){
+            $sender->sendMessage("依存プラグイン(".$dep.")をアンインストール中です");
+            @unlink($this->getDataFolder()."plugins/".$dep.".phar");
+            $sender->sendMessage("アンインストールしました");
+        }
+        $sender->sendMessage("ロールバックを完了しました");
+    }
+    
     
     public function checkplugininlist($list,$name){
         
