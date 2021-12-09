@@ -109,8 +109,32 @@ class PharPluginManager extends PluginBase implements Listener
                             $sender->sendMessage("プラグインのインストールに失敗しました");
                             return True;
                         }
+                        
+                        $sender->sendMessage("プラグインを保存しています");
+                        @file_put_contents($this->getDataFolder()."plugins/".$args[1].".phar",$result);
+                        $sender->sendMessage("保存完了しました");
+                                                
                         $sender->sendMessage("プラグインの依存関係を確認しています");
                         foreach($list[$args[1]]["deps"] as $dep){
+                            
+                            if(!$this->checkplugininlist($list,$dep["name"])){
+                                $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")が見つかりません");
+                                $sender->sendMessage("インストールに失敗しました");
+                                return true;
+                            }
+                            
+                            if(!$this->checkAPIversion($dep["name"],$this->getServer()->getApiVersion())){
+                                $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")が現在使用しているAPIバージョンに対応していません");
+                                $sender->sendMessage("インストールに失敗しました");
+                                return true;
+                            }
+                            
+                            if(!$this->checkNetworkProtocol($dep["name"],$this->packagelist->get("list"),$sender,ProtocolInfo::CURRENT_PROTOCOL)){
+                                $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")は現在のネットワークプロトコルに対応していません");
+                                $sender->sendMessage("インストールに失敗しました");
+                                return true;
+                            }
+                            
                             $options = stream_context_create(array('ssl' => array(
                                     'verify_peer'      => false,
                                     'verify_peer_name' => false
@@ -123,11 +147,13 @@ class PharPluginManager extends PluginBase implements Listener
                                 $sender->sendMessage("プラグインのインストールに失敗しました");
                                 return true;
                             }
+                            $sender->sendMessage("依存プラグイン(".$dep["name"].")を保存しています");
+                            @file_put_contents($this->getDataFolder()."plugins/".$args[1].".phar",$result);
+                            $sender->sendMessage("保存完了しました");
+                                                
                         }
                         
-                        $sender->sendMessage("プラグインを保存しています");
-                        @file_put_contents($this->getDataFolder()."plugins/".$args[1].".phar",$result);
-                        $sender->sendMessage("保存完了しました");
+                        $sender->sendMessage("全ての処理が正常に行われました");
                         $sender->sendMessage("プラグインを有効化するにはサーバーを再起動してください");
                         break;
                     case "uninstall":
@@ -416,11 +442,11 @@ class PharPluginManager extends PluginBase implements Listener
                 if(!isset($dep)) continue;
                 if(!isset($dep["name"])){
                     $sender->sendMessage("エラー(".$value["name"]."の依存プラグインの項目が不正です");
-                    //$sender->sendMessage("アップデート作業に失敗しました");
-                    //return True;
+                    $sender->sendMessage("アップデート作業に失敗しました");
+                    return True;
                 }
                 if(!$this->checkplugininlist($data,$dep["name"])){
-                    $sender->sendMessage("エラー(".$value["name"]."の依存プラグインがプラグインリストに見つかりません。");
+                    $sender->sendMessage("エラー:".$value["name"]."の依存プラグイン(".$dep["name"].")がプラグインリストに見つかりません。");
                     //$sender->sendMessage("アップデート作業に失敗しました");
                     //return True;
                 }
