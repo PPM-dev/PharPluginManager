@@ -19,38 +19,5 @@
         }
         ],
     "deps": []
-}, {
-    "name": "ppm-with-protocol",
-    "version": "1.0.0",
-    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
-    "mcpe-protocol": [475, 999],
-    "api": [
-        {
-            "from": ["3.0.0", "4.0.0"]
-        }
-        
-        ],
-    "deps": [{
-        "name": "PPM"
-    },{
-        "name": "PharPluginManager"
-    }]
-}, {
-    "name": "ppm-wp",
-    "version": "1.0.0",
-    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
-    "mcpe-protocol": [475, 999],
-    "api": [
-        {
-            "from": ["3.0.0", "4.0.0"]
-        }
-        ],
-    "deps": [{
-        "name": "PPM"
-    }, {
-        "name": "PharPluginManager"
-    }, {
-        "name": "pamalaka"
-    }]
 }
 ]
