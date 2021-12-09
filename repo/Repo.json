@@ -23,7 +23,7 @@
     "name": "ppm-with-protocol",
     "version": "1.0.0",
     "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
-    "mcpe-protocol": 475,
+    "mcpe-protocol": [475,999],
     "api": [
         {
             "from": ["3.0.0","4.0.0"]
