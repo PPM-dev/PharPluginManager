@@ -118,6 +118,11 @@ class PharPluginManager extends PluginBase implements Listener
                         $installeddeplist = [];
                         foreach($list[$args[1]]["deps"] as $dep){
                             
+                            $result = glob($this->getDataFolder()."plugins/*.phar");
+                            if(in_array($this->getDataFolder()."plugins/".$dep["name"].".phar", $result)){
+                                continue;
+                            }
+                            
                             if(!$this->checkplugininlist($list,$dep["name"])){
                                 $sender->sendMessage("エラー:".$args[1]."の依存プラグイン(".$dep["name"].")が見つかりません");
                                 $sender->sendMessage("インストールに失敗しました");
