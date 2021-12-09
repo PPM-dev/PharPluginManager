@@ -148,7 +148,7 @@ class PharPluginManager extends PluginBase implements Listener
                                 return true;
                             }
                             $sender->sendMessage("依存プラグイン(".$dep["name"].")を保存しています");
-                            @file_put_contents($this->getDataFolder()."plugins/".$args[1].".phar",$result);
+                            @file_put_contents($this->getDataFolder()."plugins/".$dep["name"].".phar",$result);
                             $sender->sendMessage("保存完了しました");
                                                 
                         }
