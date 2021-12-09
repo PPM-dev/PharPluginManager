@@ -286,7 +286,7 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkAPIversion($name,$api){
         $list = $this->packagelist->get("list");
         $apiversion = $list[$name]["api"];
-        $from = $apiversion[0]["from"];
+        $from = $apiversion["from"];
         
     	$myVersion = new VersionString($api);
 	    if(!is_array($from)){
