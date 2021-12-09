@@ -1,7 +1,7 @@
 [{
     "name": "PharPluginManager",
     "version": "1.0.0",
-    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
+    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.1.1.phar",
     "api": [
         {
             "from": "4.0.0",
@@ -12,7 +12,7 @@
 }, {
     "name": "PPM",
     "version": "1.0.0",
-    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.0.0.phar",
+    "artifact_url": "https://ppm.pages.dev/PharPluginManager_v1.1.1.phar",
     "api": [
         {
             "from": "4.0.0"
