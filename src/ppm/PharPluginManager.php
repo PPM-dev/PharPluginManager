@@ -392,7 +392,6 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkdepsinlist($data,$sender){
         $sender->sendMessage("依存関係を確認中です");
         foreach($data as $value){
-            var_dump($value);
             foreach($value["deps"] as $dep){
                 if(!isset($dep)) continue;
                 if(!isset($dep["name"])){
@@ -409,7 +408,7 @@ class PharPluginManager extends PluginBase implements Listener
         }
         $sender->sendMessage("依存関係の確認が終了しました");
         $sender->sendMessage("データを記録中です");
-        $this->packagelist->set("list",$cache);
+        $this->packagelist->set("list",$data);
         $this->packagelist->save();
         $this->packagelist->reload();
         $sender->sendMessage("データの記録が完了しました");
