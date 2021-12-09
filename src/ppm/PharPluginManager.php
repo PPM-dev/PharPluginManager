@@ -151,6 +151,7 @@ class PharPluginManager extends PluginBase implements Listener
                             }
                             $sender->sendMessage("依存プラグイン(".$dep["name"].")を保存しています");
                             @file_put_contents($this->getDataFolder()."plugins/".$dep["name"].".phar",$result);
+                            
                             $sender->sendMessage("保存完了しました");
                             $installeddeplist = $installeddeplist + array($dep[name]);
                                                 
