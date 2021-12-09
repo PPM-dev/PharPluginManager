@@ -330,18 +330,29 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkNetworkProtocol($name,$list,$sender,$protocol){
         try{
             
-        if(@!isset($list[$name]["mcpe-protocol"])){
-            $sender->sendMessage("指定されたプラグインにはネットワークプロトコルの指定は見つかりませんでした");
-            $sender->sendMessage("インストールを続行します");
-            return true;
-        }
-        
-        if($list[$name]["mcpe-protocol"] == $protocol){
-                $sender->sendMessage("指定されたプラグインは現在のネットワークプロトコルに対応しています");
+            if(@!isset($list[$name]["mcpe-protocol"])){
+                $sender->sendMessage("指定されたプラグインにはネットワークプロトコルの指定は見つかりませんでした");
+                $sender->sendMessage("インストールを続行します");
                 return true;
-            }else{
-                return false;
             }
+        
+            $pluginprotocol = $list[$name]["mcpe-protocol"];
+        
+            if(!is_array($pluginprotocol)){
+                $pluginprotocol = [$pluginprotocol];
+            }
+            
+            foreach($pluginprotocol as $plprotocol){
+                if($plprotocol == $protocol){
+                    $sender->sendMessage("指定されたプラグインは現在のネットワークプロトコルに対応しています");
+                    return true;
+                }else{
+                    continue;
+                }
+            }
+            
+            return false;
+            
         }catch (Exception $e){
             $sender->sendMessage("指定されたプラグインにはネットワークプロトコルの指定は見つかりませんでした");
             $sender->sendMessage("インストールを続行します");
