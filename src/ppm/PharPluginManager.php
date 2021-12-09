@@ -316,7 +316,7 @@ class PharPluginManager extends PluginBase implements Listener
     
     public function checkNetworkProtocol($name,$list,$sender,$protocol){
         try{
-            if($list[$name]["mcpe-protocol"] == $protocol){
+        if(@isset($list[$name]["mcpe-protocol"])&&$list[$name]["mcpe-protocol"] == $protocol){
                 $sender->sendMessage("指定されたプラグインは現在のネットワークプロトコルに対応しています");
                 return true;
             }else{
@@ -332,7 +332,7 @@ class PharPluginManager extends PluginBase implements Listener
     public function checkplugininlist($list,$name){
         
         try{
-            if(isset($list[$name])) return true;
+            if(@isset($list[$name])) return true;
         }catch(Exception $e){
             return false;
         }
