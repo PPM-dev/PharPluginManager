@@ -53,6 +53,11 @@ class PharPluginManager extends PluginBase implements Listener
         if(!$sender instanceof Player) return True;
         switch (strtolower($command->getName())) {
             case "ppm":
+                if(!isset($args[0])){
+                    $sender->sendMessage("/ppm  <install | uninstall | update | upgrade | addrepo | delrepo> [args]");
+                    return true;
+                }
+                
                 switch($args[0]){
                     case "install":
                         if(!isset($args[1])){
