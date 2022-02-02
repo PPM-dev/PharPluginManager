@@ -35,11 +35,11 @@ class PharPluginManager extends PluginBase implements Listener
 
     public function onLoad() :void
     {
-        getDataFolder()."plugins/");
+        @mkdir($this->getDataFolder()."plugins/");
         $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/");            
     }
 
-public function onLoad() :void
+    public function onEnable() :void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->source = new Config($this->getDataFolder() . "source.yml", Config::YAML);
