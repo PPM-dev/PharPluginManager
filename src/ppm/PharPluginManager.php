@@ -35,6 +35,12 @@ class PharPluginManager extends PluginBase implements Listener
 
     public function onLoad() :void
     {
+        getDataFolder()."plugins/");
+        $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/");            
+    }
+
+public function onLoad() :void
+    {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->source = new Config($this->getDataFolder() . "source.yml", Config::YAML);
         $this->packagelist = new Config($this->getDataFolder() . "list.yml", Config::YAML);
@@ -43,9 +49,8 @@ class PharPluginManager extends PluginBase implements Listener
             $this->source->save();
             $this->source->reload();
         }
-        @mkdir($this->getDataFolder()."plugins/");
-        $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/");            
     }
+
 
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
     {
