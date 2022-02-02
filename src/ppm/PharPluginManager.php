@@ -48,7 +48,7 @@ class PharPluginManager extends PluginBase implements Listener
         @mkdir($this->getDataFolder()."plugins/");
         $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/"); 
         foreach($this->getServer()->getPluginManager()->getPlugins() as $plugin){
-        	if(!$plugin->isEnabled() and $plugin->getDescription()->getOrder()->equals($type)){
+        	if(!$plugin->isEnabled()){
         	  $this->getServer()->getPluginManager()->enablePlugin($plugin);
         	}
         }
