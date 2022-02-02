@@ -33,11 +33,6 @@ class PharPluginManager extends PluginBase implements Listener
     public $packagelist;
     public $plugin;
 
-    public function onLoad() :void
-    {
-        @mkdir($this->getDataFolder()."plugins/");
-        $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/");            
-    }
 
     public function onEnable() :void
     {
@@ -48,6 +43,14 @@ class PharPluginManager extends PluginBase implements Listener
             $this->source->set("repo", ["https://ppm.pages.dev/Database.json"]);
             $this->source->save();
             $this->source->reload();
+        }
+        
+        @mkdir($this->getDataFolder()."plugins/");
+        $this->getServer()->getPluginManager()->loadPlugins($this->getDataFolder()."plugins/"); 
+        foreach($this->getServer()->getPluginManager()->getPlugins() as $plugin){
+        	if(!$plugin->isEnabled() and $plugin->getDescription()->getOrder()->equals($type)){
+        	  $this->getServer()->getPluginManager()->enablePlugin($plugin);
+        	}
         }
     }
 
