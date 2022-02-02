@@ -57,7 +57,6 @@ class PharPluginManager extends PluginBase implements Listener
 
   public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool
     {
-        if(!$sender instanceof Player) return True;
         switch (strtolower($command->getName())) {
             case "ppm":
                 if(!isset($args[0])){
