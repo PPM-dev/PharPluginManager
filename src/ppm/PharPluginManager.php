@@ -33,7 +33,7 @@ class PharPluginManager extends PluginBase implements Listener
     public $packagelist;
     public $plugin;
 
-    public function onEnable() :void
+    public function onLoad() :void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->source = new Config($this->getDataFolder() . "source.yml", Config::YAML);
@@ -96,6 +96,7 @@ class PharPluginManager extends PluginBase implements Listener
                             return true;
                         }
                         
+                      
                         $sender->sendMessage("プラグインのダウンロードを開始します");
                         $options = stream_context_create(array('ssl' => array(
                           'verify_peer'      => false,
@@ -153,7 +154,8 @@ class PharPluginManager extends PluginBase implements Listener
                             $result = @file_get_contents($list[$dep["name"]]["artifact_url"], false, $options);
                             if(!$result){
                                 $sender->sendMessage("エラー:依存関係のダウンロードに失敗しました");
-                                $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返されました");
+                                $sender->sendMessage("サーバに接続できないか、サーバーからエラーが返され
+                              ました");
                                 $sender->sendMessage("プラグインのインストールに失敗しました");
                                 return true;
                             }
